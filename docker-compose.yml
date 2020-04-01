@@ -1,0 +1,27 @@
+version: "3"
+services:
+  ui:
+    build: ./frontend/
+    container_name: ui
+    ports:
+      - "3000:80"
+
+  api:
+    build: ./backend/
+    container_name: api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  db:
+    image: postgres:11.5
+    container_name: database
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: docker
+      POSTGRES_USER: latenightcode
+      POSTGRES_PASSWORD: Password123
+    volumes:
+    - ~/docker-volumes/postgres_docker:/var/lib/postgresql/data
+    - ./db:/docker-entrypoint-initdb.d
